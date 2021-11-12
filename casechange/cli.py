@@ -1,10 +1,10 @@
-from typer import Typer
+import typer
 
-app = Typer()
+app = typer.Typer()
 
 
 @app.command()
-def main(string: str, n: int) -> str:
+def main(string: str, n: int):
     """Augment string so that every `n`th alphanumeric character is capitalized.
 
     $ casechange Abc*-2fr 3
@@ -12,3 +12,4 @@ def main(string: str, n: int) -> str:
     $ casechange r1.abB 2
     r1.aBb
     """
+    typer.echo(string)
