@@ -1,6 +1,6 @@
 import re
 
-from hypothesis import given, strategies as st, target
+from hypothesis import example, given, strategies as st, target
 from typer.testing import CliRunner
 
 from casechange.cli import app
@@ -9,6 +9,7 @@ runner = CliRunner()
 
 
 @given(st.text(), st.integers(min_value=1))
+@example("Ab.d3", 2)  # should return "aB.d3"
 def test_script_good_input(s: str, n: int):
     """I've used hypothesis a few times. It's ocassionally a bit hard to fit it into a
     test suite, but it seems perfect for this usecase.
@@ -36,6 +37,10 @@ def test_script_good_input(s: str, n: int):
 
 
 def assert_alphanumerics_match_capitalization_pattern(r: str, n: int):
+    """
+    Remove all non-alphanumeric characters, then check if the remaining characters fit the
+    required capitalization pattern
+    """
     alphanumerics = just_alphanumeric(r)
     if n > len(alphanumerics):  # added due to sre_parse.MAX_REPEAT limit
         return
