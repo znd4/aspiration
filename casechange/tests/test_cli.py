@@ -14,7 +14,7 @@ def test_script_good_input(s: str, n: int):
     test suite, but it seems perfect for this usecase.
     """
     # At some point, hypothesis failed to come up with a simple failure condition
-    # ( see @example("Ab.c1", 2) )
+    # ( e.g. @example("Ab.c1", 2) )
     # Here we're trying to get hypothesis to pick strings with a good mix of lowercase,
     # uppercase, and non-letters.
     target(
