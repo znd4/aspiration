@@ -167,8 +167,11 @@ def test_subtract(x: DoubleSet, y: DoubleSet):
 
     for element in expected_counts:
         expected_counts[element] -= y_counts[element]
-        if expected_counts[element] <= 0:
-            del expected_counts[element]
+
+    # Remove expected_counts
+    expected_counts = {
+        element: count for element, count in expected_counts.items() if count > 0
+    }
 
     actual_counts = get_counts(x - y)
 
