@@ -9,4 +9,12 @@
 
 1. `poetry install && poetry shell`
 2. `pip install pre-commit`
-3. `pre-commit install`
+3. Install pre-commit hooks
+
+```sh
+pre-commit install
+```
+
+```python linenums="1"
+print("helloworld")
+```

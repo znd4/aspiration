@@ -1,0 +1,12 @@
+site_name: Coding Assignment Submission For Aspiration
+theme:
+  name: material
+  features:
+    - content.code.annotate
+# 🙋‍♂️ I'm a code annotation! I can contain code, formatted text, images, ... basically anything that can be expressed in Markdown.
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.snippets
