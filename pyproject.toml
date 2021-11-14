@@ -31,6 +31,7 @@ mkdocs = "^1.2.3"
 mkdocs-material = "8.0.0b1"
 mkdocstrings = "^0.16.2"
 mkdocs-click = "^0.4.0"
+mike = "^1.1.2"
 
 [tool.coverage.run]
 branch = true
