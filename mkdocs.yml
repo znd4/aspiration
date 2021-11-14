@@ -10,11 +10,15 @@ theme:
 # 🙋‍♂️ I'm a code annotation! I can contain code, formatted text, images, ... basically anything that can be expressed in Markdown.
 
 markdown_extensions:
+  - attr_list
   - pymdownx.highlight
   - pymdownx.inlinehilite
   - pymdownx.superfences
   - pymdownx.snippets
   - mkdocs-click
+  - toc:
+      permalink: true
+      title: On this page
 
 plugins:
   - search
