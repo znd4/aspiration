@@ -25,7 +25,6 @@ class DoubleSet:
     def __eq__(self, other) -> bool:
         if not hasattr(other, "counts"):
             raise ValueError("Cannot compare equality of DoubleSet and non-DoubleSet")
-        breakpoint()
         return self.counts == other.counts
 
 
