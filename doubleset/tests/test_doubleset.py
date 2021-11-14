@@ -49,6 +49,16 @@ def test_associativity(x: DoubleSet, y: DoubleSet, z: DoubleSet):
     assert (x + (y + z)) == ((x + y) + z)
 
 
+@given(x=double_set())
+def test_max_count_upon_instantiation_is_two(x):
+    """The need for this test came up when test_membership was taking a really long time
+    for seemingly no reason. After debugging, I realized that we weren't limiting counts
+    to two when instantiating DoubleSet.
+    """
+    assert max([*x.counts.values(), 2]) == 2
+
+
+@pytest.mark.timeout(30)  # in case count isn't being limited to 2
 @given(x=good_mapping())
 def test_membership(x: dict[int, int]):
     expected_members = {key for key in x if x[key] != 0}
