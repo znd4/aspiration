@@ -75,7 +75,13 @@ def extract_counts(ds: DoubleSet) -> dict[int, int]:
 
 @given(x=double_set())
 def test_max_count_is_two(x):
-    counts = get_counts(x)
+    counts: dict[int, int] = get_counts(x)
+
+    if not counts:
+        # If counts is empty, then this test should pass trivially, but
+        # max([]) throws an error, so we need to have this guard clause
+        return
+
     assert max(counts.values()) <= 2
 
 
