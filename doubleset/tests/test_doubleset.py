@@ -107,6 +107,14 @@ def test_remove_element():
 
 
 @pytest.mark.xfail()
+def test_remove_element_not_in_set():
+    """Should raise an appropriate error when trying to delete an element from a set
+    iff `raise==True`
+    """
+    raise NotImplementedError()
+
+
+@pytest.mark.xfail()
 def test_add_element():
     raise NotImplementedError
 
