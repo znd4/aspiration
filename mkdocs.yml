@@ -1,4 +1,8 @@
 site_name: Coding Assignment Submission For Aspiration
+nav:
+  - Home: "index.md"
+  - DoubleSet: "doubleset.md"
+  - Case Change: "casechange.md"
 theme:
   name: material
   features:
@@ -10,3 +14,7 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.superfences
   - pymdownx.snippets
+
+plugins:
+  - search
+  - mkdocstrings
