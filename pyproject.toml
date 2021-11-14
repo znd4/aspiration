@@ -30,6 +30,7 @@ pytest-timeout = "^2.0.1"
 mkdocs = "^1.2.3"
 mkdocs-material = "8.0.0b1"
 mkdocstrings = "^0.16.2"
+mkdocs-click = "^0.4.0"
 
 [tool.coverage.run]
 branch = true

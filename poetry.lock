@@ -357,6 +357,18 @@ Markdown = ">=3.3,<4.0"
 mkdocs = ">=1.1,<2.0"
 
 [[package]]
+name = "mkdocs-click"
+version = "0.4.0"
+description = "An MkDocs extension to generate documentation for Click command line applications"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+click = ">=7,<9"
+markdown = ">=3.0.0,<4.0.0"
+
+[[package]]
 name = "mkdocs-material"
 version = "8.0.0b1"
 description = "A Material Design theme for MkDocs"
@@ -786,7 +798,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "03c635b2bc5ee1d807010055175bbb2f91d34f012de03c905f2e7aac6bc4cd0a"
+content-hash = "3e6216f0ba6b2cd0dc6778348da9fbf45cefc9fa52485737f66c19560eb25111"
 
 [metadata.files]
 appnope = [
@@ -993,6 +1005,10 @@ mkdocs = [
 mkdocs-autorefs = [
     {file = "mkdocs-autorefs-0.3.0.tar.gz", hash = "sha256:2f89556eb2107d72e3aff41b04dcaaf1125d407a33b8027fbc982137d248d37d"},
     {file = "mkdocs_autorefs-0.3.0-py3-none-any.whl", hash = "sha256:261875003e49b5d708993fd2792a69d624cbc8cf7de49e96c81d3d9825977ca4"},
+]
+mkdocs-click = [
+    {file = "mkdocs_click-0.4.0-py3-none-any.whl", hash = "sha256:3b54c65bd1e6e2b600da71d77705e911d15d86bc2c2b341ff5d7f76b9fe1505b"},
+    {file = "mkdocs_click-0.4.0.tar.gz", hash = "sha256:b34be84cde57850733fb1b32db37b472620ac2c3e97db4abbe11dbd6b98124f2"},
 ]
 mkdocs-material = [
     {file = "mkdocs-material-8.0.0b1.tar.gz", hash = "sha256:0c967b9d212a404da5ba8be52de6bb6b1b2d000ce31e073fe9b986ee1bb16efc"},
