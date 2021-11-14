@@ -105,11 +105,27 @@ def test_add(x: dict[int, int], y: dict[int, int]):
     assert expected_counts == actual_counts
 
 
-def add_to_and_update_target(*, target, source):
+def add_to_and_update_target(*, target: dict[int, int], source: dict[int, int]):
     for k, v in source.items():
         if v == 0:
             continue
-        target[k] = min((target[k] + v, 2)) if k in target else 0
+
+        # We decided to not use defaultdict for this because we'd need to convert
+        # back to a dict to compare to the output of get_counts.
+        # However, we still need to set a default value of 0 for the purposes
+        # of this mock operation
+        target[k] = target[k] if k in target else 0
+
+        # Add the value from source
+        target[k] += v
+
+        # enforce max count of two
+        target[k] = min((target[k], 2))
+
+        # if the sum of all of the counts for key `k` is 0, that key shouldn't
+        # be present in the DoubleSet
+        if not target[k]:
+            del target[k]
 
 
 @pytest.mark.xfail()
