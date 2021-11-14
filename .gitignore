@@ -1,3 +1,6 @@
+# direnv
+.envrc
+
 .vscode/settings.json
 
 # Ignore files cached by Hypothesis...
