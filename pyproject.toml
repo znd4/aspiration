@@ -23,7 +23,13 @@ pytest = "^6.2.5"
 pytest = "^6.2.5"
 hypothesis = "^6.24.2"
 pytest-cov = "^3.0.0"
-coverage = "^6.1.2"
+coverage = { version = "^6.1.2", extras = ["toml"] }
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+omit = ["**/__main__.py"]
 
 [build-system]
 requires = ["poetry-core>=1.2"]
