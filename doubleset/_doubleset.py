@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
+from typing import Iterator
 
 
 class DoubleSet:
@@ -26,6 +27,22 @@ class DoubleSet:
         if not hasattr(other, "counts"):
             raise ValueError("Cannot compare equality of DoubleSet and non-DoubleSet")
         return self.counts == other.counts
+
+    def __iter__(self) -> Iterator[int]:
+        """
+        Rather than explicitly defining a __next__ method, or even creating a separate
+        DoubleSetIterator class, I figured it would be better to stick with a generator.
+        It's a nifty way to simplify the amount of code we need to write, and tbh it's
+        clearer.
+        This allows us to get
+        >>> ds = DoubleSet({1: 2, 2: 1, 3: 0})
+        >>> list(sorted(ds))
+        [1, 1, 2]
+        """
+        for element, count in self.counts.items():
+            # we should yield an element twice if there are two of it in self
+            for _ in range(count):
+                yield element
 
 
 def enforce_max_count(counts: dict[int, int]) -> None:
