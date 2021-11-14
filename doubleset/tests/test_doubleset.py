@@ -9,7 +9,7 @@ from doubleset import DoubleSet
 
 @st.composite
 def good_mapping(draw: st.DrawFn) -> DefaultDict[int, int]:
-    mapping = draw(st.dictionaries(keys=st.integers(), values=st.integers(min_value=0)))
+    mapping = draw(st.dictionaries(keys=st.integers(), values=st.integers()))
     return defaultdict(int, mapping)
 
 
@@ -61,7 +61,7 @@ def test_max_count_upon_instantiation_is_two(x):
 @pytest.mark.timeout(30)  # in case count isn't being limited to 2
 @given(x=good_mapping())
 def test_membership(x: dict[int, int]):
-    expected_members = {key for key in x if x[key] != 0}
+    expected_members = {key for key in x if x[key] > 0}
     ds = DoubleSet(x)
     actual_members = {key for key in ds}
     assert expected_members == actual_members
@@ -107,7 +107,8 @@ def test_add(x: dict[int, int], y: dict[int, int]):
 
 def add_to_and_update_target(*, target: dict[int, int], source: dict[int, int]):
     for k, v in source.items():
-        if v == 0:
+        if v <= 0:
+            # elements with nonpositive `count` shouldn't be included in
             continue
 
         # We decided to not use defaultdict for this because we'd need to convert
@@ -165,7 +166,7 @@ def test_subtract(x: DoubleSet, y: DoubleSet):
     y_counts = get_counts(y)
 
     for element in expected_counts:
-        expected_counts -= y_counts[element]
+        expected_counts[element] -= y_counts[element]
         if expected_counts[element] <= 0:
             del expected_counts[element]
 

@@ -5,8 +5,10 @@ from typing import Iterator
 
 
 class DoubleSet:
+    """A modification of `set` that allows for up to two instances of each element"""
+
     def __init__(self, counts: dict[int, int] = None):
-        self.counts = _initialize_counts(counts)
+        self.counts: dict[int, int] = _initialize_counts(counts)
 
     def __add__(self, other) -> DoubleSet:
         counts = defaultdict(int)
@@ -16,8 +18,9 @@ class DoubleSet:
         for element, count in other.counts.items():
             counts[element] += count
 
-        enforce_max_count(counts)
-
+        # max_count is enforced during DoubleSet creation. We used to also run
+        # `enforce_max_count` here, but wew don't need to, so it's been removed
+        # to remove a pointless O(N) scan
         return DoubleSet(counts)
 
     def __repr__(self):
@@ -35,24 +38,37 @@ class DoubleSet:
         It's a nifty way to simplify the amount of code we need to write, and tbh it's
         clearer.
         This allows us to get
-        >>> ds = DoubleSet({1: 2, 2: 1, 3: 0})
-        >>> list(sorted(ds))
-        [1, 1, 2]
+
+        ``` python
+        ds = DoubleSet({1: 2, 2: 1, 3: 0})
+        list(sorted(ds))
+        # [1, 1, 2]
+        ```
         """
         for element, count in self.counts.items():
             # we should yield an element twice if there are two of it in self
             for _ in range(count):
                 yield element
 
+    def __sub__(self, other) -> DoubleSet:
+        counts = defaultdict(int, self.counts)
+        for element, count in other.counts.items():
+            counts[element] -= count
 
-def enforce_max_count(counts: dict[int, int]) -> None:
-    for element, count in counts.items():
-        counts[element] = min((count, 2))
+        return DoubleSet(counts)
+
+
+def remove_nonpositive_count_elements(counts: dict[int, int]) -> dict[int, int]:
+    """(inplace) remove elemnts of `counts` with values <= 0"""
+    return {element: count for element, count in counts.items() if count > 0}
+
+
+def enforce_max_count(counts: dict[int, int]) -> dict[int, int]:
+    return {element: min((count, 2)) for element, count in counts.items()}
 
 
 def _initialize_counts(counts: dict[int, int] | None = None):
     counts = counts or {}
-    counts = {element: count for element, count in counts.items() if count}
-    enforce_max_count(counts)
-    counts = defaultdict(int, counts)
+    counts = remove_nonpositive_count_elements(counts)
+    counts = enforce_max_count(counts)
     return counts
