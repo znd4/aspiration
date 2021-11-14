@@ -8,7 +8,11 @@ from casechange.cli import app
 runner = CliRunner()
 
 
-@given(st.text(), st.integers(min_value=1))
+@given(
+    # We need to blacklist "\r"
+    st.text(st.characters(blacklist_categories=("Cs",), blacklist_characters="\r")),
+    st.integers(min_value=1),
+)
 @example("Ab.d3", 2)  # should return "aB.d3"
 def test_script_good_input(s: str, n: int):
     """I've used hypothesis a few times. It's ocassionally a bit hard to fit it into a
