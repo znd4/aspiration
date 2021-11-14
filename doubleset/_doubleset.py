@@ -53,5 +53,6 @@ def enforce_max_count(counts: dict[int, int]) -> None:
 def _initialize_counts(counts: dict[int, int] | None = None):
     counts = counts or {}
     counts = {element: count for element, count in counts.items() if count}
+    enforce_max_count(counts)
     counts = defaultdict(int, counts)
     return counts
