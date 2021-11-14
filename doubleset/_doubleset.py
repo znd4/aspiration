@@ -25,12 +25,13 @@ class DoubleSet:
     def __eq__(self, other) -> bool:
         if not hasattr(other, "counts"):
             raise ValueError("Cannot compare equality of DoubleSet and non-DoubleSet")
+        breakpoint()
         return self.counts == other.counts
 
 
 def enforce_max_count(counts: dict[int, int]) -> None:
     for element, count in counts.items():
-        counts[element] = max((count, 2))
+        counts[element] = min((count, 2))
 
 
 def _initialize_counts(counts: dict[int, int] | None = None):

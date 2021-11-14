@@ -93,7 +93,7 @@ def add_to_and_update_target(*, target, source):
     for k, v in source.items():
         if v == 0:
             continue
-        target[k] = max((target[k] + v, 2)) if k in target else 0
+        target[k] = min((target[k] + v, 2)) if k in target else 0
 
 
 @pytest.mark.xfail()
