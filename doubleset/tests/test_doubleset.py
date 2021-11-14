@@ -1,8 +1,10 @@
 from collections import defaultdict
-import pytest
 from typing import DefaultDict
+
+import pytest
+from hypothesis import given, strategies as st
+
 from doubleset import DoubleSet
-from hypothesis import example, given, strategies as st, target
 
 
 @st.composite
@@ -61,13 +63,37 @@ def extract_counts(ds: DoubleSet) -> dict[int, int]:
     return counts
 
 
+@given(x=double_set())
+def test_max_count_is_two(x):
+    counts = get_counts(x)
+    assert max(counts.values()) <= 2
+
+
 @given(
     x=good_mapping(),
     y=good_mapping(),
 )
 def test_add(x: dict[int, int], y: dict[int, int]):
+    expected_counts: dict[int, int] = {}
+    add_to_and_update_target(target=expected_counts, source=x)
+    add_to_and_update_target(target=expected_counts, source=y)
+
     x_ds = DoubleSet(x)
     y_ds = DoubleSet(y)
+    z_ds: DoubleSet = x_ds + y_ds
+
+    assert isinstance(z_ds, DoubleSet)
+
+    actual_counts: dict[int, int] = get_counts(z_ds)
+
+    assert expected_counts == actual_counts
+
+
+def add_to_and_update_target(*, target, source):
+    for k, v in source.items():
+        if v == 0:
+            continue
+        target[k] = max((target[k] + v, 2)) if k in target else 0
 
 
 @pytest.mark.xfail()
@@ -76,5 +102,33 @@ def test_value_error():
 
 
 @pytest.mark.xfail()
-def test_subtract():
+def test_remove_element():
     raise NotImplementedError
+
+
+@pytest.mark.xfail()
+def test_add_element():
+    raise NotImplementedError
+
+
+def get_counts(ds: DoubleSet) -> DefaultDict[int, int]:
+    result: dict[int, int] = defaultdict(int)  # int() == 0
+    for element in ds:
+        result[element] += 1
+    return result
+
+
+@given(x=double_set(), y=double_set())
+def test_subtract(x: DoubleSet, y: DoubleSet):
+
+    expected_counts = get_counts(x)
+    y_counts = get_counts(y)
+
+    for element in expected_counts:
+        expected_counts -= y_counts[element]
+        if expected_counts[element] <= 0:
+            del expected_counts[element]
+
+    actual_counts = get_counts(x - y)
+
+    assert expected_counts == actual_counts
