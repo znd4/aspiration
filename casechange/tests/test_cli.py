@@ -1,5 +1,6 @@
 import re
 
+import pytest
 from hypothesis import example, given, strategies as st, target
 from typer.testing import CliRunner
 
@@ -8,6 +9,7 @@ from casechange.cli import app
 runner = CliRunner()
 
 
+@pytest.mark.timeout(30)
 @given(
     # We need to blacklist "\r"
     st.text(st.characters(blacklist_categories=("Cs",), blacklist_characters="\r")),
