@@ -25,7 +25,7 @@ def main(string: str, n: int, method: Method = Method.naive):
     """
     if method == Method.naive:
         result = naive(string, n)
-    if method == Method.numpy:
+    elif method == Method.numpy:
         result = numpy(string, n)
     else:
         raise NotImplementedError(f"Have not implemented {method=}")
