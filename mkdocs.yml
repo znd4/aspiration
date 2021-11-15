@@ -8,7 +8,17 @@ theme:
   name: material
   features:
     - content.code.annotate
-# 🙋‍♂️ I'm a code annotation! I can contain code, formatted text, images, ... basically anything that can be expressed in Markdown.
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
 
 markdown_extensions:
   - attr_list
