@@ -30,16 +30,74 @@ print(list(sorted(a)))
 
 ## Max Count
 
-## Non-Positive Counts
+The maximum number of occurrences of an element in a DoubleSet is two
 
 ```python linenums="1"
+b = DoubleSet({1: 2, 2: 5})
 
+print(list(sorted(b)))
+# [1, 1, 2, 2]
+```
+
+## Non-Positive Counts
+
+If an element has a nonpositive count, it won't be present in the instantiated `DoubleSet`
+
+```python linenums="1"
+c = DoubleSet({1: 0, 2: -20})
+
+print(list(sorted(c)))
+# []
 ```
 
 ## Addition
 
-TODO
+Adding two `DoubleSet`s is defined as adding the counts of each of the equal elements (still with a max count per element of two).
+
+```python linenums="1"
+x = DoubleSet({1: 1, 2: 2})
+y = DoubleSet({1: 1, 2: 1})
+
+z = x + y
+print(list(sorted(z)))
+# [1, 1, 2, 2]
+```
+
+If an element is present in one `DoubleSet` but not the other, we take the count from the `DoubleSet` where it is present.
+
+```python linenums="1"
+x = DoubleSet({1: 1, 2: 1})
+y = DoubleSet({2: 1, 3: 1})
+
+z = x + y
+print(list(sorted(z)))
+# [1, 2, 2, 3]
+```
+
+Finally, because a DoubleSet cannot have elements with nonpositive counts, `DoubleSet`s do not have inverses.
+
+For math-ey people: if $S$ is the set of all integer-containing `DoubleSet`s, then
+
+$$
+\forall s \in{S} \hspace{1mm} \mid \hspace{1mm} \textnormal{len(}s\textnormal{)>0},\\
+\nexists t \in{S} \mid s+t = \emptyset
+$$
+
+Here's a code example that might explain this better. What will this output?
+
+```python linenums="1"
+x = DoubleSet({1: 1})
+y = DoubleSet({1: -1})
+
+z = x + y
+print(list(sorted(z)))
+```
+
+At first glance, it might look like the `1` and `-1` in the counts should cancel out, such that this would output `[]`, but we actually end up with `[1]`. The reason for this is that `y` is actually the empty set, because any elements with nonpositive counts get ignored.
+
+```python linenums="6"
+print(y == DoubleSet({}))
+# True
+```
 
 ## Subtraction
-
-TODO
