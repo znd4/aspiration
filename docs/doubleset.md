@@ -101,3 +101,31 @@ print(y == DoubleSet({}))
 ```
 
 ## Subtraction
+
+Subtraction of two `DoubleSet`s is _like_ addition -- we subtract the counts of elements in the right `DoubleSet` from the counts of the elements in the left `DoubleSet`.
+
+```python linenums="1"
+x = DoubleSet({1: 2})
+print("x =", list(sorted(x)))
+# x = [1, 1]
+
+y = DoubleSet({1: 1})
+print("y =", list(sorted(y)))
+# y = [1]
+
+z = x - y
+print(list(sorted(z)))
+# [1]
+```
+
+We need to remember the rule that the count of an element has to be `>0` and `<=2`.
+
+```python linenums="1"
+z = DoubleSet({1: 3}) - DoubleSet({1: 2})
+print("z = ", list(sorted(z)))
+# z = []
+
+z = DoubleSet({1: 1}) - DoubleSet({1: -1})
+print("z = ", list(sorted(z)))
+# z = [1]
+```
