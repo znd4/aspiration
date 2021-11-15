@@ -1,9 +1,9 @@
 # Case Change
 
 ::: mkdocs-click
-:module: casechange.cli
-:command: click_app
-:depth: 1
+    :module: casechange.cli
+    :command: click_app
+    :depth: 1
 
 ## Edge-Cases
 
