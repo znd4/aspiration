@@ -10,13 +10,14 @@ runner = CliRunner()
 
 
 @pytest.mark.timeout(30)
+@pytest.mark.parametrize("method", ["naive", "numpy"])
 @given(
     # We need to blacklist "\r"
-    st.text(st.characters(blacklist_categories=("Cs",), blacklist_characters="\r")),
-    st.integers(min_value=1),
+    s=st.text(st.characters(blacklist_categories=("Cs",), blacklist_characters="\r")),
+    n=st.integers(min_value=1),
 )
 @example("Ab.d3", 2)  # should return "aB.d3"
-def test_script_good_input(s: str, n: int):
+def test_script_good_input(method: str, s: str, n: int):
     """I've used hypothesis a few times. It's ocassionally a bit hard to fit it into a
     test suite, but it seems perfect for this usecase.
     """
@@ -31,7 +32,9 @@ def test_script_good_input(s: str, n: int):
         / (len(s) + 1) ** 3
     )
 
-    result = runner.invoke(app, [s, str(n)], catch_exceptions=False)
+    result = runner.invoke(
+        app, [s, str(n), f"--method={method}"], catch_exceptions=False
+    )
 
     # stdout includes an extra newline suffix
     r = result.stdout.removesuffix("\n")

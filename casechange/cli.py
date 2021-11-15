@@ -1,6 +1,6 @@
 import typer
 from enum import Enum
-from ._casechange import naive
+from .methods import naive, numpy
 from typing import Literal
 
 app = typer.Typer(add_completion=False)
@@ -8,6 +8,7 @@ app = typer.Typer(add_completion=False)
 
 class Method(str, Enum):
     naive = "naive"
+    numpy = "numpy"
 
 
 @app.command()
@@ -24,8 +25,10 @@ def main(string: str, n: int, method: Method = Method.naive):
     """
     if method == "naive":
         result = naive(string, n)
+    if method == "numpy":
+        result = numpy(string, n)
     else:
-        raise ValueError(f"{method} is not a known method.")
+        raise NotImplementedError(f"Have not implemented {method=}")
 
     typer.echo(result)
 

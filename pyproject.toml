@@ -10,7 +10,7 @@ packages = [{ include = "casechange" }, { include = "doubleset" }]
 casechange = 'casechange.cli:app'
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9,<3.11"
 typer = "^0.4.0"
 
 [tool.poetry.group.dev.dependencies]
@@ -34,6 +34,9 @@ mkdocs-material = "8.0.0b1"
 mkdocstrings = "^0.16.2"
 mkdocs-click = "^0.4.0"
 mike = "^1.1.2"
+
+[tool.poetry.group.numpy.dependencies]
+numpy = "^1.21.4"
 
 [tool.coverage.run]
 branch = true
