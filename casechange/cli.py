@@ -1,17 +1,18 @@
-import string as string_
-
 import typer
+from enum import Enum
+from ._casechange import naive
+from typing import Literal
 
 app = typer.Typer(add_completion=False)
 
 
-# rename so that we can use the argument name string in main
-ALPHANUMERICS = {*string_.ascii_letters, *string_.digits}
+class Method(str, Enum):
+    naive = "naive"
 
 
 @app.command()
-def main(sequence: str, n: int):
-    """Augment `sequence` so that every `n`th alphanumeric character is capitalized.
+def main(string: str, n: int, method: Method = Method.naive):
+    """Augment `string` so that every `n`th alphanumeric character is capitalized.
 
     ```sh
     $ casechange Abc*-2fr 3
@@ -21,16 +22,12 @@ def main(sequence: str, n: int):
     r1.aBb
     ```
     """
+    if method == "naive":
+        result = naive(string, n)
+    else:
+        raise ValueError(f"{method} is not a known method.")
 
-    alphanumeric_index = 0
-    for i, char in enumerate(sequence):
-        if char in ALPHANUMERICS:
-            alphanumeric_index = (alphanumeric_index + 1) % n
-            if alphanumeric_index:
-                sequence = sequence[:i] + sequence[i].lower() + sequence[i + 1 :]
-            else:
-                sequence = sequence[:i] + sequence[i].upper() + sequence[i + 1 :]
-    typer.echo(sequence)
+    typer.echo(result)
 
 
 # This is added for documentation purposes (the mkdocs-click plugin needs access to the
