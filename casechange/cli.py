@@ -23,9 +23,9 @@ def main(string: str, n: int, method: Method = Method.naive):
     r1.aBb
     ```
     """
-    if method == "naive":
+    if method == Method.naive:
         result = naive(string, n)
-    if method == "numpy":
+    if method == Method.numpy:
         result = numpy(string, n)
     else:
         raise NotImplementedError(f"Have not implemented {method=}")
