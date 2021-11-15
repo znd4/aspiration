@@ -43,4 +43,6 @@ omit = ["**/__main__.py"]
 
 [build-system]
 requires = ["poetry>=1.2.0a2"]
+# Once it releases, this should be changed to the below
+# requires = ["poetry-core>=1.2"]
 build-backend = "poetry.core.masonry.api"

@@ -15,6 +15,7 @@ def build_docs_server(session):
     client_secret = os.environ.get("CLIENT_SECRET")
     cookie_secret = os.environ.get("COOKIE_SECRET")
 
+    # This is here because I'm using a prerelease version of poetry
     session.install("git+https://github.com/python-poetry/poetry.git@1.2.0a2")
     session.install(".[docs]")
 
