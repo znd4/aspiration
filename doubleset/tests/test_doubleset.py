@@ -8,9 +8,8 @@ from doubleset import DoubleSet
 
 
 @st.composite
-def good_mapping(draw: st.DrawFn) -> DefaultDict[int, int]:
-    mapping = draw(st.dictionaries(keys=st.integers(), values=st.integers()))
-    return defaultdict(int, mapping)
+def good_mapping(draw: st.DrawFn) -> dict[int, int]:
+    return draw(st.dictionaries(keys=st.integers(), values=st.integers()))
 
 
 @st.composite
