@@ -11,7 +11,7 @@ import yaml
 @nox.session
 def build_docs_server(session):
     """Build oauth2-proxy image, push to dockerhub, then deploy on digital ocean"""
-    app_id = os.environ.get("DO_APP_ID", "46e73a6e-3d13-40f1-a398-e58ddb5e39f2")
+    app_id = os.environ.get("DO_APP_ID")
     client_secret = os.environ.get("CLIENT_SECRET")
     cookie_secret = os.environ.get("COOKIE_SECRET")
 
@@ -73,7 +73,7 @@ def digital_ocean_spec(*, client_secret, cookie_secret, tag: str):
                             "./oauth2-proxy.cfg",
                             f"--client-secret={client_secret}",
                             "--provider=github",
-                            f"--github-user={','.join(github_users)}",# comma
+                            f"--github-user={','.join(github_users)}",
                             # I haven't been able to get this github_repo flag to work
                             "--github-repo",
                             "zdog234/aspiration",
