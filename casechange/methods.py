@@ -6,6 +6,7 @@ def naive(s: str, n: int) -> str:
     """Loop through the characters in s, constructing a new string
     at each step in the loop. This is probably $O(N^2)$
     """
+    s = _strip_null_characters(s)
     alphanumeric_index = 0
     alnum_pattern = regex.compile(
         r"""
@@ -54,6 +55,9 @@ def numpy(s: str, n: int) -> str:
     # but it's better if it happens at startup, for consistency reasons.
     # However, I'm not sure of a better approach, since numpy is an optional
     # dependency
+
+    s = _strip_null_characters(s)
+
     import numpy as np
 
     s_arr = np.array(list(s), dtype=str)
@@ -90,3 +94,8 @@ def _get_alphanumerics(s_arr):
             ]
         )
     )[0]
+
+
+def _strip_null_characters(s: str):
+    pattern = re.compile(r"\x00")
+    return pattern.sub("", s)

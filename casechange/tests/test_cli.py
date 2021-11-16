@@ -14,7 +14,9 @@ runner = CliRunner()
 @pytest.mark.parametrize("method", ["naive", "numpy"])
 @given(
     # We need to blacklist "\r"
-    s=st.text(st.characters(blacklist_categories=("Cs",), blacklist_characters="\r")),
+    s=st.text(
+        st.characters(blacklist_categories=("Cs",), blacklist_characters=("\r", "\x00"))
+    ),
     n=st.integers(min_value=1),
 )
 @example(s="Ab.d3", n=2)  # should return "aB.d3"
@@ -23,6 +25,7 @@ runner = CliRunner()
 # The small capital letters are tricky. They're lowercase and can't be upper-cased
 @example(s="ᴀ", n=1)
 @example(s="º", n=1)
+@example(s="\x00" + "a", n=1)  # Strip null characters (I)
 def test_script_good_input(method: str, s: str, n: int):
     """I've used hypothesis a few times. It's ocassionally a bit hard to fit it into a
     test suite, but it seems perfect for this usecase.
@@ -48,10 +51,17 @@ def test_script_good_input(method: str, s: str, n: int):
     # stdout includes an extra newline suffix
     r = result.stdout.removesuffix("\n")
 
+    s = _strip_null_characters(s)
+
     # ignoring capitalization, the input and output strings should be thesame
     assert r.lower() == s.lower()
 
     assert_alphanumerics_match_capitalization_pattern(r, n)
+
+
+def _strip_null_characters(s: str):
+    pattern = re.compile(r"\x00")
+    return pattern.sub("", s)
 
 
 def assert_alphanumerics_match_capitalization_pattern(r: str, n: int):
