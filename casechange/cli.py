@@ -16,12 +16,15 @@ def main(string: str, n: int, method: Method = Method.naive):
     """Augment `string` so that every `n`th alphanumeric character is capitalized.
 
     ```sh
-    $ casechange Abc*-2fr 3
+    $ casechange 'Abc*-2fr' 3
     abC*-2fR
 
-    $ casechange r1.abB 2
+    $ casechange 'r1.abB' 2
     r1.aBb
     ```
+
+    Note the use of quotes. Even though you don't have to use quotes in bash, if you
+    leave them out, you might get tripped up by characters that have syntactic meaning.
     """
     if method == Method.naive:
         result = naive(string, n)

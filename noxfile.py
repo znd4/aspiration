@@ -53,6 +53,7 @@ def build_docs_server(session):
 
 @contextmanager
 def digital_ocean_spec(*, client_secret, cookie_secret, tag: str):
+    github_users = ["zdog234"]
     with TemporaryDirectory() as td:
         config = {
             "name": "aspiration-proxy",
@@ -72,10 +73,10 @@ def digital_ocean_spec(*, client_secret, cookie_secret, tag: str):
                             "./oauth2-proxy.cfg",
                             f"--client-secret={client_secret}",
                             "--provider=github",
-                            "--github-user=zdog234",
+                            f"--github-user={','.join(github_users)}",# comma
                             # I haven't been able to get this github_repo flag to work
-                            # "--github-repo",
-                            # "zdog234/aspiration",
+                            "--github-repo",
+                            "zdog234/aspiration",
                             f"--cookie-secret={cookie_secret}",
                         ]
                     ),
