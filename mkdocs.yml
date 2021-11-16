@@ -1,5 +1,6 @@
 site_name: Coding Assignment Submission For Aspiration
 repo_url: https://github.com/zdog234/aspiration
+edit_uri: edit/main/docs/
 nav:
   - Home: "index.md"
   - DoubleSet: "doubleset.md"
