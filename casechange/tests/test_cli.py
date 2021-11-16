@@ -96,14 +96,10 @@ def just_uppercase(s: str) -> str:
 def just_alphanumeric(s: str) -> str:
     """Replace all non-alphanumeric characters with the empty string"""
     pattern = regex.compile(
+        # This was a total pain to get right.
         r"""
             (?=[^0-9])          # not a number AND ...
-            # (?=
-            # \P{Alphabetic}       # Non-letters
-            (\P{Latin}|(?=\P{Ll})\P{Lu})     # Non-Latin Script
-            # | [ᴀ-ᴢ]  # don't count small capital latin characters
-            #| [ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘꞯʀꜱᴛᴜᴠᴡʏᴢ]  # don't count small capital latin characters
-            # )
+            (\P{Latin}|(?=\P{Ll})\P{Lu})     # Not latin letters
         """,
         regex.VERBOSE,
     )
