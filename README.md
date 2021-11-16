@@ -1,5 +1,7 @@
 # Coding Interview for Aspiration
 
+[Documentation](https://zanedufour-aspiration-wz9eq.ondigitalocean.app/) - hosted on digital ocean behind an oauthproxy2 server. You may need to reach out to `zane@znd4.me` to get access.
+
 ## Pre-requisites
 
 1. [python](https://realpython.com/installing-python/)
