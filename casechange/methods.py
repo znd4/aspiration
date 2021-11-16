@@ -1,7 +1,5 @@
-import string
-
-
-ALPHANUMERICS = {*string.ascii_letters, *string.digits}
+import re
+import regex
 
 
 def naive(s: str, n: int) -> str:
@@ -9,8 +7,19 @@ def naive(s: str, n: int) -> str:
     at each step in the loop. This is probably $O(N^2)$
     """
     alphanumeric_index = 0
+    alnum_pattern = regex.compile(
+        r"""
+            [0-9]
+            | # OR
+            (?=\p{Alphabetic})      # Letters
+            (?=\p{Script=Latin})    # That are also latin
+            [^ᴀ-ᴢ] # And not one of these weird 
+            # [^ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘꞯʀꜱᴛᴜᴠᴡʏᴢ] # And not one of these weird 
+        """,
+        regex.VERBOSE,
+    )
     for i, char in enumerate(s):
-        if char in ALPHANUMERICS:
+        if alnum_pattern.match(char):
             alphanumeric_index = (alphanumeric_index + 1) % n
             if alphanumeric_index:
                 s = s[:i] + s[i].lower() + s[i + 1 :]
@@ -49,7 +58,7 @@ def numpy(s: str, n: int) -> str:
 
     s_arr = np.array(list(s), dtype=str)
 
-    alnums = np.where(np.char.isalnum(s_arr))[0]
+    alnums = _get_alphanumerics(s_arr)
 
     is_not_nth = (np.arange(alnums.shape[0]) + 1) % n
 
@@ -60,3 +69,24 @@ def numpy(s: str, n: int) -> str:
     s_arr[lowers] = np.char.lower(s_arr[lowers])
 
     return "".join(s_arr)
+
+
+def _get_alphanumerics(s_arr):
+    """Get the lowercase and uppercase letters, and digits"""
+    import numpy as np
+
+    return np.where(
+        np.logical_and.reduce(
+            [
+                np.logical_or.reduce(
+                    [
+                        np.char.islower(s_arr),
+                        np.char.isupper(s_arr),
+                        np.char.isdigit(s_arr),
+                    ]
+                ),
+                # the small latin characters get counted as non-letters
+                *[s_arr != char for char in "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘꞯʀꜱᴛᴜᴠᴡʏᴢ"],
+            ]
+        )
+    )[0]

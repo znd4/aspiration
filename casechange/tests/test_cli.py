@@ -1,4 +1,5 @@
 import re
+import regex
 
 import pytest
 from hypothesis import example, given, strategies as st, target
@@ -9,14 +10,19 @@ from casechange.cli import app
 runner = CliRunner()
 
 
-@pytest.mark.timeout(30)
+# @pytest.mark.timeout(30)
 @pytest.mark.parametrize("method", ["naive", "numpy"])
 @given(
     # We need to blacklist "\r"
     s=st.text(st.characters(blacklist_categories=("Cs",), blacklist_characters="\r")),
     n=st.integers(min_value=1),
 )
-@example("Ab.d3", 2)  # should return "aB.d3"
+@example(s="Ab.d3", n=2)  # should return "aB.d3"
+@example(s="0Āa", n=2)  # thanks again, hypothesis :)
+@example(s="ā", n=1)
+# The small capital letters are tricky. They're lowercase and can't be upper-cased
+@example(s="ᴀ", n=1)
+@example(s="º", n=1)
 def test_script_good_input(method: str, s: str, n: int):
     """I've used hypothesis a few times. It's ocassionally a bit hard to fit it into a
     test suite, but it seems perfect for this usecase.
@@ -25,6 +31,9 @@ def test_script_good_input(method: str, s: str, n: int):
     # ( e.g. @example("Ab.c1", 2) )
     # Here we're trying to get hypothesis to pick strings with a good mix of lowercase,
     # uppercase, and non-letters.
+    if s.startswith("-"):
+        return
+
     target(
         len(just_lowercase(s))
         * len(just_uppercase(s))
@@ -54,23 +63,23 @@ def assert_alphanumerics_match_capitalization_pattern(r: str, n: int):
     if n > len(alphanumerics):  # added due to sre_parse.MAX_REPEAT limit
         return
 
-    pattern = re.compile(
-        """
+    pattern = regex.compile(
+        r"""
             (
-                [a-z0-9]{%i}    # n-1 lowercase characters
-                [A-Z0-9]        # followed by one uppercase character
+                [\p{Ll}\dᴀ-ᴢ]{%i}    # n-1 lowercase characters
+                [\p{Lu}\dᴀ-ᴢ]        # followed by one uppercase character
             )*                  # We can have {0, 1, 2, ...} n-grams.
             # The alphanumerics can end in 0 to n-1 lowercase characters.
-            [a-z0-9]{0,%i}
+            [\p{Ll}\dᴀ-ᴢ]{0,%i}
         """
         % (n - 1, n - 1),
-        re.VERBOSE,
+        regex.VERBOSE,
     )
     assert pattern.fullmatch(alphanumerics)
 
 
 def just_nonletters(s: str) -> str:
-    pattern = re.compile(r"[^a-zA-Z]")
+    pattern = re.compile(r"\w")
     return pattern.sub("", s)
 
 
@@ -86,5 +95,17 @@ def just_uppercase(s: str) -> str:
 
 def just_alphanumeric(s: str) -> str:
     """Replace all non-alphanumeric characters with the empty string"""
-    pattern = re.compile(r"[^a-zA-Z0-9]")
+    pattern = regex.compile(
+        r"""
+            (?=[^0-9])          # not a number AND ...
+            # (?=
+            # \P{Alphabetic}       # Non-letters
+            (\P{Latin}|(?=\P{Ll})\P{Lu})     # Non-Latin Script
+            # | [ᴀ-ᴢ]  # don't count small capital latin characters
+            #| [ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘꞯʀꜱᴛᴜᴠᴡʏᴢ]  # don't count small capital latin characters
+            # )
+        """,
+        regex.VERBOSE,
+    )
+    # breakpoint()
     return pattern.sub("", s)

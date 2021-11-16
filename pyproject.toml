@@ -20,6 +20,8 @@ ipython = "^7.29.0"
 pytest = "^6.2.5"
 nox = "^2021.10.1"
 PyYAML = "^6.0"
+pdbpp = "^0.10.3"
+
 
 [tool.poetry.group.test.dependencies]
 pytest = "^6.2.5"
@@ -27,6 +29,8 @@ hypothesis = "^6.24.2"
 pytest-cov = "^3.0.0"
 coverage = { version = "^6.1.2", extras = ["toml"] }
 pytest-timeout = "^2.0.1"
+regex = "^2021.11.10"
+
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "^1.2.3"
@@ -35,8 +39,10 @@ mkdocstrings = "^0.16.2"
 mkdocs-click = "^0.4.0"
 mike = "^1.1.2"
 
+
 [tool.poetry.group.numpy.dependencies]
 numpy = "^1.21.4"
+
 
 [tool.coverage.run]
 branch = true
