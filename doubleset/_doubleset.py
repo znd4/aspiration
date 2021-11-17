@@ -9,7 +9,7 @@ class DoubleSet:
     """A modification of `set` that allows for up to two instances of each element.
 
 
-    ```python
+    ```python linenums="1"
     from doubleset import DoubleSet
     ds = DoubleSet({0: 1, 1: 2})
 
@@ -56,7 +56,7 @@ class DoubleSet:
         clearer.
         This allows us to get
 
-        ``` python
+        ```python linenums="1"
         from doubleset import DoubleSet
         ds = DoubleSet({1: 2, 2: 1, 3: 0})
         list(sorted(ds))

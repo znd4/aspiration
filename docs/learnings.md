@@ -6,6 +6,8 @@ This was a fun project. Here are some of the new tools I got a chance to explore
 
 I'd used this a _bit_ before, but I got a chance to play around with a lot of plugins.
 
+I also figured out how to get README.md to be the docs homepage (I didn't know that git could track simlinks), but it might be more trouble than it's worth -- links to the documentation in the README can either work in github or on the docs site, not both (because the docs site composes the links relative to `./docs/`, whereas in github, they're constructed relative to `./`)
+
 ## oauth2-server
 
 I got a chance to use `oauth2-server` as a static file server, which was fun to figure out and configure. I'm not sure how often I'll use for this purpose though. Most of the time, documentation would either be hosted on a platform that restricts access to members of an organization, or I'd want it to be publicly available. That being said, I might use `oauth2-server` for other stuff in the future.

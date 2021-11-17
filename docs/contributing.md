@@ -11,7 +11,6 @@
 # this currently requires installing a preview poetry version
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py \
     | POETRY_VERSION=1.2.0a2 POETRY_PREVIEW=1 python -
-
 ```
 
 ## Set up virtual environment

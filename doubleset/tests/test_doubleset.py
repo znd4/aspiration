@@ -19,7 +19,7 @@ def double_set(draw: st.DrawFn) -> DoubleSet:
     The `draw` function instantiates a strategy that is passed into it. The overall
     pattern for composite is
 
-    ```python
+    ```python linenums="1"
     @st.composite
     def new_strategy(draw):
         generated_data = draw(some_preexisting_strategy())
@@ -28,7 +28,7 @@ def double_set(draw: st.DrawFn) -> DoubleSet:
 
     `new_strategy` can then be used in future tests:
 
-    ```python
+    ```python linenums="1"
     @given(x=new_strategy())
     def test_something(x):
         # ...

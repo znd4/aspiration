@@ -14,7 +14,7 @@ def naive(s: str, n: int) -> str:
             | # OR
             (?=\p{Alphabetic})      # Letters
             (?=\p{Script=Latin})    # That are also latin
-            [^ß] # And not one of these blacklisted characters
+            [^ß] # And not one of these blocklisted characters
         """,
         regex.VERBOSE,
     )
@@ -85,7 +85,7 @@ def _get_alnum_indices_from_str(s: str):
             | # OR
             (?=\p{Alphabetic})      # Letters
             (?=\p{Script=Latin})    # That are also latin
-            [^ß] # And not one of these blacklisted characters
+            [^ß] # And not one of these blocklisted characters
         """,
         regex.VERBOSE,
     )

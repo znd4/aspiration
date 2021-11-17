@@ -129,3 +129,7 @@ z = DoubleSet({1: 1}) - DoubleSet({1: -1})
 print("z = ", list(sorted(z)))
 # z = [1]
 ```
+
+## Future Features
+
+I wanted to add some helper methods like `.add`, `.remove`, `union`, etc., but haven't had time.

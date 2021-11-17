@@ -13,9 +13,9 @@ runner = CliRunner()
 # @pytest.mark.timeout(30)
 @pytest.mark.parametrize("method", ["naive", "numpy"])
 @given(
-    # We need to blacklist "\r"
+    # We need to blocklist "\r"
     s=st.text(
-        st.characters(blacklist_categories=("Cs",), blacklist_characters=("\r", "\x00"))
+        st.characters(blocklist_categories=("Cs",), blocklist_characters=("\r", "\x00"))
     ),
     n=st.integers(min_value=1),
 )
@@ -113,7 +113,7 @@ def just_alphanumeric(s: str) -> str:
             (?=[^0-9])          # not a number AND ...
             (
                 (\P{Latin}|(?=\P{Ll})\P{Lu}) # isn't a latin letter
-                | [ß] # isn't one of these blacklisted characters
+                | [ß] # isn't one of these blocklisted characters
             )
         """,
         regex.VERBOSE,
