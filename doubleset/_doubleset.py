@@ -1,11 +1,28 @@
 from __future__ import annotations
+from pydantic import validate_arguments
 
 from collections import defaultdict
 from typing import Iterator
 
 
 class DoubleSet:
-    """A modification of `set` that allows for up to two instances of each element"""
+    """A modification of `set` that allows for up to two instances of each element.
+
+
+    ```python
+    from doubleset import DoubleSet
+    ds = DoubleSet({0: 1, 1: 2})
+
+    print(2 in ds)
+    # False
+
+    print(list(sorted(ds)))
+    # [0, 1, 1]
+    ```
+
+    > note: `DoubleSet` only allows `int`s as values
+
+    """
 
     def __init__(self, counts: dict[int, int] = None):
         self.counts: dict[int, int] = _initialize_counts(counts)
@@ -40,6 +57,7 @@ class DoubleSet:
         This allows us to get
 
         ``` python
+        from doubleset import DoubleSet
         ds = DoubleSet({1: 2, 2: 1, 3: 0})
         list(sorted(ds))
         # [1, 1, 2]
@@ -67,8 +85,19 @@ def enforce_max_count(counts: dict[int, int]) -> dict[int, int]:
     return {element: min((count, 2)) for element, count in counts.items()}
 
 
+def enforce_only_ints(counts: dict[int, int]):
+    """Make sure that all of the elements and `count`s in `counts` are `int`s"""
+    for element, count in counts.items():
+        if not isinstance(element, int):
+            raise ValueError(f"{element=}. All keys in counts should be ints.")
+
+        if not isinstance(count, int):
+            raise ValueError(f"{count=}. All values in counts should be ints.")
+
+
 def _initialize_counts(counts: dict[int, int] | None = None):
     counts = counts or {}
+    enforce_only_ints(counts)
     counts = remove_nonpositive_count_elements(counts)
     counts = enforce_max_count(counts)
     return counts
