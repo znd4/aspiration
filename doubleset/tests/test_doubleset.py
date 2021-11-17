@@ -128,9 +128,10 @@ def add_to_and_update_target(*, target: dict[int, int], source: dict[int, int]):
             del target[k]
 
 
-@pytest.mark.xfail()
-def test_value_error():
-    raise NotImplementedError
+@pytest.mark.parametrize("element", ["a", tuple(), 1.1])
+def test_value_error(element):
+    with pytest.raises(ValueError):
+        DoubleSet({element: 1})
 
 
 @pytest.mark.xfail()
