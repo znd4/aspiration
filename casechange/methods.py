@@ -95,27 +95,6 @@ def _get_alnum_indices_from_str(s: str):
     return np.array([m.start() for m in matches], dtype=int)
 
 
-def _get_alphanumerics(s_arr):
-    """Get the lowercase and uppercase letters, and digits"""
-    import numpy as np
-
-    return np.where(
-        np.logical_and.reduce(
-            [
-                np.logical_or.reduce(
-                    [
-                        np.char.islower(s_arr),
-                        np.char.isupper(s_arr),
-                        np.char.isdigit(s_arr),
-                    ]
-                ),
-                # the small latin characters get counted as non-letters
-                *[s_arr != char for char in "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘꞯʀꜱᴛᴜᴠᴡʏᴢ"],
-            ]
-        )
-    )[0]
-
-
 def _strip_null_characters(s: str):
     pattern = re.compile(r"\x00")
     return pattern.sub("", s)
