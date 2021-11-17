@@ -14,6 +14,9 @@ def build_docs_server(session):
     app_id = os.environ.get("DO_APP_ID")
     client_secret = os.environ.get("CLIENT_SECRET")
     cookie_secret = os.environ.get("COOKIE_SECRET")
+    docker_id = os.environ.get("DOCKER_ID", "zanedufour")
+    github_repo = os.environ.get("GITHUB_REPO_OWNER", "zdog234/aspiration")
+    github_users = os.environ.get("GITHUB_USERS")
 
     # This is here because I'm using a prerelease version of poetry
     session.install("git+https://github.com/python-poetry/poetry.git@1.2.0a2")
@@ -29,17 +32,22 @@ def build_docs_server(session):
         "--file",
         "docs-server/Dockerfile",
         "-t",
-        f"docker.io/zanedufour/aspiration_proxy:{tag}",
+        f"docker.io/{docker_id}/aspiration_proxy:{tag}",
         external=True,
     )
     session.run(
         "docker",
         "push",
-        f"docker.io/zanedufour/aspiration_proxy:{tag}",
+        f"docker.io/{docker_id}/aspiration_proxy:{tag}",
         external=True,
     )
     with digital_ocean_spec(
-        client_secret=client_secret, cookie_secret=cookie_secret, tag=tag
+        client_secret=client_secret,
+        cookie_secret=cookie_secret,
+        tag=tag,
+        docker_id=docker_id,
+        github_repo=github_repo,
+        github_users=github_users,
     ) as spec:
         session.run(
             "doctl",
@@ -52,8 +60,16 @@ def build_docs_server(session):
 
 
 @contextmanager
-def digital_ocean_spec(*, client_secret, cookie_secret, tag: str):
-    github_users = ["zdog234"]
+def digital_ocean_spec(
+    *,
+    client_secret,
+    cookie_secret,
+    tag: str,
+    docker_id: str,
+    github_repo: str,
+    github_users: str | None,
+):
+    github_user_list = github_users.split(",") if github_users else ["zdog234"]
     with TemporaryDirectory() as td:
         config = {
             "name": "aspiration-proxy",
@@ -62,7 +78,7 @@ def digital_ocean_spec(*, client_secret, cookie_secret, tag: str):
                     "name": "proxy",
                     "image": {
                         "registry_type": "DOCKER_HUB",
-                        "registry": "zanedufour",
+                        "registry": f"{docker_id}",
                         "repository": "aspiration_proxy",
                         "tag": tag,
                     },
@@ -73,10 +89,9 @@ def digital_ocean_spec(*, client_secret, cookie_secret, tag: str):
                             "./oauth2-proxy.cfg",
                             f"--client-secret={client_secret}",
                             "--provider=github",
-                            f"--github-user={','.join(github_users)}",
-                            # I haven't been able to get this github_repo flag to work
-                            "--github-repo",
-                            "zdog234/aspiration",
+                            f"--github-user={','.join(github_user_list)}",
+                            # I haven't been able to test this. (owner can't be a collaborator)
+                            f"--github-repo={github_repo}",
                             f"--cookie-secret={cookie_secret}",
                         ]
                     ),

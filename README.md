@@ -7,18 +7,9 @@
 ## Pre-requisites
 
 1. [python](https://realpython.com/installing-python/)
-2. [poetry](https://python-poetry.org/docs/#installation)
 
-## Setup
-
-1. `poetry install && poetry shell`
-2. `pip install pre-commit`
-3. Install pre-commit hooks
+## Installation
 
 ```sh
-pre-commit install
-```
-
-```python linenums="1"
-print("helloworld")
+pip install git+https://github.com/zdog234/aspiration.git@main
 ```

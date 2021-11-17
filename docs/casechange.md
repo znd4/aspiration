@@ -5,6 +5,15 @@
     :command: click_app
     :depth: 1
 
+## Installation
+
+If you're okay with using the default `naive` method, you can use the standard [installation instructions](./getting_started.md). However, if you want to use the more efficient `numpy` method, you'll need to include the `[numpy]` extra (and also have the depencies for installing numpy, which vary from platform to platform).
+
+```sh
+# I couldn't get `aspiration[numpy]` working with a git url install
+pip install numpy "git+https://github.com/zdog234/aspiration.git@main"
+```
+
 ## Edge-Cases
 
 ### "\r"

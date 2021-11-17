@@ -20,3 +20,7 @@ Edge cases caught by hypothesis (that I managed to capture here):
 ### Unicode is wild
 
 Oof, there's a lot going on here. I finally learned what [lookahead assertions](https://stackoverflow.com/a/469951/5071232) are
+
+### New poetry version
+
+The preview version of poetry has better support for splitting dependencies the way that `setuptools` encourages (`docs` vs `test` vs `lint` etc.)
