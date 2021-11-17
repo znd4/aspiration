@@ -14,8 +14,7 @@ def naive(s: str, n: int) -> str:
             | # OR
             (?=\p{Alphabetic})      # Letters
             (?=\p{Script=Latin})    # That are also latin
-            [^ᴀ-ᴢ] # And not one of these weird 
-            # [^ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘꞯʀꜱᴛᴜᴠᴡʏᴢ] # And not one of these weird 
+            [^ß] # And not one of these blacklisted characters
         """,
         regex.VERBOSE,
     )
@@ -62,7 +61,8 @@ def numpy(s: str, n: int) -> str:
 
     s_arr = np.array(list(s), dtype=str)
 
-    alnums = _get_alphanumerics(s_arr)
+    alnums = _get_alnum_indices_from_str(s)
+    # alnums = _get_alphanumerics(s_arr)
 
     is_not_nth = (np.arange(alnums.shape[0]) + 1) % n
 
@@ -73,6 +73,26 @@ def numpy(s: str, n: int) -> str:
     s_arr[lowers] = np.char.lower(s_arr[lowers])
 
     return "".join(s_arr)
+
+
+def _get_alnum_indices_from_str(s: str):
+    # Okay, I'm surrendering to looping with a regular expression
+    import numpy as np
+
+    pattern = regex.compile(
+        r"""
+            [0-9]
+            | # OR
+            (?=\p{Alphabetic})      # Letters
+            (?=\p{Script=Latin})    # That are also latin
+            [^ß] # And not one of these blacklisted characters
+        """,
+        regex.VERBOSE,
+    )
+
+    matches = pattern.finditer(s)
+
+    return np.array([m.start() for m in matches], dtype=int)
 
 
 def _get_alphanumerics(s_arr):

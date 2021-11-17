@@ -23,9 +23,11 @@ runner = CliRunner()
 @example(s="0Āa", n=2)  # thanks again, hypothesis :)
 @example(s="ā", n=1)
 # The small capital letters are tricky. They're lowercase and can't be upper-cased
-@example(s="ᴀ", n=1)
+@example(s="ᴀa", n=2)
 @example(s="º", n=1)
 @example(s="\x00" + "a", n=1)  # Strip null characters (I)
+@example(s="აa", n=1)
+@example(s="ß", n=1)
 def test_script_good_input(method: str, s: str, n: int):
     """I've used hypothesis a few times. It's ocassionally a bit hard to fit it into a
     test suite, but it seems perfect for this usecase.
@@ -109,9 +111,11 @@ def just_alphanumeric(s: str) -> str:
         # This was a total pain to get right.
         r"""
             (?=[^0-9])          # not a number AND ...
-            (\P{Latin}|(?=\P{Ll})\P{Lu})     # Not latin letters
+            (
+                (\P{Latin}|(?=\P{Ll})\P{Lu}) # isn't a latin letter
+                | [ß] # isn't one of these blacklisted characters
+            )
         """,
         regex.VERBOSE,
     )
-    # breakpoint()
     return pattern.sub("", s)
