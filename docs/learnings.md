@@ -21,15 +21,15 @@ Like `mkdocs`, I'd used `hypothesis` for a couple projects before, but I'd never
 Here are some unicode edge cases caught by hypothesis in the `casechange` tests (that I managed to capture here)
 
 1. `s="0Āa", n=2`
-   1. This one was really tricky. It turns out that numpy was handling everything properly, and the naive solution was failing, but my tests were failing for both because python's regex module `re` is strict that `bool(re.match(r"A", Ā)) == False`.
+    1. This one was really tricky. It turns out that numpy was handling everything properly, and the naive solution was failing, but my tests were failing for both because python's regex module `re` is strict that `bool(re.match(r"A", Ā)) == False`.
 2. `"ᴀa"`
-   1. `ᴀ` is a member of a character set called Small Capital Case Latin letters. It belongs to the lowercase letters unicode category (`r"\p{Ll}"`), `"ᴀ".upper() == "ᴀ"`!!!
-   2. The solution I ended up coming up with is to treat `ᴀ` as _both_ an upper-case and lower-case character, and test with it accordingly.
-3. [`º`](https://en.wikipedia.org/wiki/Ordinal_indicator)
-   1. This isn't actually a case-able letter, but it was showing up in some of the letter categories. I don't remember how, but I ended up managing to exclude it from the alphanumeric category without adding it to an explicit excludelist.
-4. [`ß`](https://en.wikipedia.org/wiki/%C3%9F)
-   1. This is in the category of latin letters (`\p{Alphabetic}` and `\p{Script=Latin}`), but `"ß".upper() == "SS"`, which is really confusing because it adds an extra character.
-   2. The solution: to explicitly exclude it from the alphanumerics
+    1. `ᴀ` is a member of a character set called Small Capital Case Latin letters. It belongs to the lowercase letters unicode category (`r"\p{Ll}"`), `"ᴀ".upper() == "ᴀ"`!!!
+    2. The solution I ended up coming up with is to treat `ᴀ` as _both_ an upper-case and lower-case character, and test with it accordingly.
+3. `"º"` ([Ordinal Indicator](https://en.wikipedia.org/wiki/Ordinal_indicator))
+    1. This isn't actually a case-able letter, but it was showing up in some of the letter categories. I don't remember how, but I ended up managing to exclude it from the alphanumeric category without adding it to an explicit excludelist.
+4. `"ß"` ([eszett](https://en.wikipedia.org/wiki/%C3%9F))
+    1. This is in the category of latin letters (`\p{Alphabetic}` and `\p{Script=Latin}`), but `"ß".upper() == "SS"`, which is really confusing because it adds an extra character.
+    2. The solution: to explicitly exclude it from the alphanumerics
 
 ## New poetry version
 
