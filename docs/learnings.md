@@ -16,7 +16,7 @@ I got a chance to use `oauth2-server` as a static file server, which was fun to 
 
 Like `mkdocs`, I'd used `hypothesis` for a couple projects before, but I'd never used it as extensively as I have here (it's been really useful for catching edge cases).
 
-### Unicode is wild
+## Unicode is wild
 
 Here are some unicode edge cases caught by hypothesis in the `casechange` tests (that I managed to capture here)
 
@@ -31,6 +31,6 @@ Here are some unicode edge cases caught by hypothesis in the `casechange` tests 
    1. This is in the category of latin letters (`\p{Alphabetic}` and `\p{Script=Latin}`), but `"ß".upper() == "SS"`, which is really confusing because it adds an extra character.
    2. The solution: to explicitly exclude it from the alphanumerics
 
-### New poetry version
+## New poetry version
 
 The preview version of poetry has better support for splitting dependencies the way that `setuptools` encourages (`docs` vs `test` vs `lint` etc.)
