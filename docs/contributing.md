@@ -64,10 +64,8 @@ However, if you do want to deploy this for some reason, you'll need
       1. your dockerhub user ID
    5. (Optional if you're me) - `GITHUB_REPO`
       1. Of the form `owner/name`
-      2. Any _contributor_ in this repo will be able to authenticate to the oauth2-proxy server
-   6. (Optional if you're me) - `GITHUB_USERS`
-      1. A comma-separated list of github user IDs
-      2. Anyone in this list will be able to authenticate to the oauth2-proxy server (this is necessary if the repo is owned by a user, since that user can't be added as a _contributor_)
+      2. Anyone who is an _owner_ or _contributor_ in this repo will be able to authenticate to the oauth2-proxy server
+   6. `GITHUB_TOKEN` - A github personal access token with full `repo` privileges.
 6. To the `client_id` field in `docs-server/oauth2-proxy.cfg` to the client_id for your github app.
 
 Once you've done all of that (assuming I haven't missed any other steps), it's as simple as

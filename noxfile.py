@@ -11,12 +11,12 @@ import yaml
 @nox.session
 def build_docs_server(session):
     """Build oauth2-proxy image, push to dockerhub, then deploy on digital ocean"""
-    app_id = os.environ.get("DO_APP_ID")
-    client_secret = os.environ.get("CLIENT_SECRET")
-    cookie_secret = os.environ.get("COOKIE_SECRET")
+    app_id = os.environ["DO_APP_ID"]
+    client_secret = os.environ["CLIENT_SECRET"]
+    cookie_secret = os.environ["COOKIE_SECRET"]
+    github_token = os.environ["GITHUB_TOKEN"]
     docker_id = os.environ.get("DOCKER_ID", "zanedufour")
     github_repo = os.environ.get("GITHUB_REPO_OWNER", "zdog234/aspiration")
-    github_users = os.environ.get("GITHUB_USERS")
 
     # This is here because I'm using a prerelease version of poetry
     session.install("git+https://github.com/python-poetry/poetry.git@1.2.0a2")
@@ -47,7 +47,7 @@ def build_docs_server(session):
         tag=tag,
         docker_id=docker_id,
         github_repo=github_repo,
-        github_users=github_users,
+        github_token=github_token,
     ) as spec:
         session.run(
             "doctl",
@@ -67,9 +67,8 @@ def digital_ocean_spec(
     tag: str,
     docker_id: str,
     github_repo: str,
-    github_users: str | None,
+    github_token: str,
 ):
-    github_user_list = github_users.split(",") if github_users else ["zdog234"]
     with TemporaryDirectory() as td:
         config = {
             "name": "aspiration-proxy",
@@ -89,10 +88,10 @@ def digital_ocean_spec(
                             "./oauth2-proxy.cfg",
                             f"--client-secret={client_secret}",
                             "--provider=github",
-                            f"--github-user={','.join(github_user_list)}",
                             # I haven't been able to test this. (owner can't be a collaborator)
                             f"--github-repo={github_repo}",
                             f"--cookie-secret={cookie_secret}",
+                            f"--github-token={github_token}",
                         ]
                     ),
                     "routes": [{"path": "/"}, {"path": "/ping"}],
