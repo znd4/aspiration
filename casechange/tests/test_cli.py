@@ -1,7 +1,7 @@
 import re
-import regex
 
 import pytest
+import regex
 from hypothesis import example, given, strategies as st, target
 from typer.testing import CliRunner
 

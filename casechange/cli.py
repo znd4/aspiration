@@ -1,7 +1,8 @@
-import typer
 from enum import Enum
+
+import typer
+
 from .methods import naive, numpy
-from typing import Literal
 
 app = typer.Typer(add_completion=False)
 
