@@ -1,5 +1,4 @@
 from __future__ import annotations
-from pydantic import validate_arguments
 
 from collections import defaultdict
 from typing import Iterator

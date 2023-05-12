@@ -1,10 +1,11 @@
-from pathlib import Path
 import datetime as dt
 import os
-from contextlib import contextmanager
-import nox
-from tempfile import TemporaryDirectory
 import shlex
+from contextlib import contextmanager
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
+import nox
 import yaml
 
 

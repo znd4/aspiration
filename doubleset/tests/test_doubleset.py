@@ -161,7 +161,6 @@ def get_counts(ds: DoubleSet) -> DefaultDict[int, int]:
 
 @given(x=double_set(), y=double_set())
 def test_subtract(x: DoubleSet, y: DoubleSet):
-
     expected_counts = get_counts(x)
     y_counts = get_counts(y)
 
