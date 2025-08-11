@@ -62,7 +62,7 @@ def test_max_count_upon_instantiation_is_two(x):
 def test_membership(x: dict[int, int]):
     expected_members = {key for key in x if x[key] > 0}
     ds = DoubleSet(x)
-    actual_members = {key for key in ds}
+    actual_members = set(ds)
     assert expected_members == actual_members
 
 
@@ -128,7 +128,7 @@ def add_to_and_update_target(*, target: dict[int, int], source: dict[int, int]):
             del target[k]
 
 
-@pytest.mark.parametrize("element", ["a", tuple(), 1.1])
+@pytest.mark.parametrize("element", ["a", (), 1.1])
 def test_value_error(element):
     with pytest.raises(ValueError):
         DoubleSet({element: 1})
